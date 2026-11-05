@@ -52,7 +52,7 @@ DEFAULT_VPN_KEYWORDS: tuple[str, ...] = (
     "vpn",
 )
 
-# Physical / virtual adapters that often contain "tun"/"vpn" but are not user VPNs.
+# Adapters that stay "up" forever and must not count as the Roblox VPN toggle.
 DEFAULT_IGNORE: tuple[str, ...] = (
     "loopback",
     "bluetooth",
@@ -66,6 +66,26 @@ DEFAULT_IGNORE: tuple[str, ...] = (
     "microsoft wi-fi direct",
     "npcap",
     "pseudo-interface",
+    "teredo",
+    "isatap",
+    "wan miniport",
+    "radmin",
+    "famatech",
+    "hamachi",
+    "logmein",
+)
+
+# Names that are the normal internet link, not a tunnel.
+PHYSICAL_HINTS: tuple[str, ...] = (
+    "беспровод",
+    "wi-fi",
+    "wifi",
+    "wireless",
+    "ethernet",
+    "локальн",
+    "tp-link",
+    "realtek",
+    "intel",
 )
 
 
@@ -149,41 +169,92 @@ def _rasdial_connected() -> list[str]:
     return connected
 
 
+def _run_hidden(args: list[str]) -> str:
+    try:
+        completed = subprocess.run(
+            args,
+            capture_output=True,
+            text=True,
+            encoding="utf-8",
+            errors="ignore",
+            timeout=5,
+            creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0),
+        )
+    except (OSError, subprocess.TimeoutExpired):
+        return ""
+    return (completed.stdout or "") + "\n" + (completed.stderr or "")
+
+
+def _default_route_ips() -> list[tuple[int, str]]:
+    """IPv4 default routes as (metric, interface address), lowest metric first."""
+    text = _run_hidden(["route", "print", "-4"])
+    found: list[tuple[int, str]] = []
+    for line in text.splitlines():
+        parts = line.split()
+        if len(parts) < 5 or parts[0] != "0.0.0.0" or parts[1] != "0.0.0.0":
+            continue
+        iface_ip = parts[3]
+        if not re.match(r"^\d+\.\d+\.\d+\.\d+$", iface_ip):
+            continue
+        try:
+            metric = int(parts[4])
+        except ValueError:
+            continue
+        found.append((metric, iface_ip))
+    found.sort(key=lambda item: item[0])
+    return found
+
+
+def _adapter_for_ip(ip: str, adapters: list[VpnAdapter]) -> VpnAdapter | None:
+    for adapter in adapters:
+        if ip in adapter.addresses:
+            return adapter
+    return None
+
+
+def _is_internet_vpn(adapter: VpnAdapter, keywords: list[str], ignores: list[str]) -> bool:
+    blob = f"{adapter.name} {adapter.description}"
+    if _matches_any(blob, ignores):
+        return False
+    if _matches_any(blob, keywords):
+        return True
+    # A non-physical interface that won the default route is a tunnel
+    # (happ-tun, sing-tun, outline, amnezia, ...).
+    return not _matches_any(blob, PHYSICAL_HINTS)
+
+
 def detect_active_vpns(
     extra_keywords: Iterable[str] | None = None,
     ignore: Iterable[str] | None = None,
 ) -> list[VpnAdapter]:
+    """VPN is on only when the best default route goes through a tunnel.
+
+    Always-on virtual LANs (Radmin, Hamachi) stay up without owning traffic,
+    so adapter-up checks never see a connect/disconnect edge.
+    """
     keywords = list(DEFAULT_VPN_KEYWORDS) + list(extra_keywords or [])
     ignores = list(DEFAULT_IGNORE) + list(ignore or [])
+    adapters = list_network_adapters()
 
-    found: list[VpnAdapter] = []
-    for adapter in list_network_adapters():
-        blob = f"{adapter.name} {adapter.description}"
-        if _matches_any(blob, ignores):
+    for _metric, iface_ip in _default_route_ips():
+        winner = _adapter_for_ip(iface_ip, adapters)
+        if winner is None or not winner.is_up:
             continue
-        if not adapter.is_up:
-            continue
-        if _matches_any(blob, keywords):
-            # Require at least one IP when possible — reduces false positives
-            # for dormant named adapters that report isup oddly.
-            if adapter.addresses or _matches_any(blob, ("wireguard", "wintun", "warp", "nordlynx")):
-                found.append(adapter)
+        if _is_internet_vpn(winner, keywords, ignores):
+            return [winner]
+        # Best route is ordinary Wi-Fi/Ethernet — tunnel is not carrying traffic.
+        return []
 
     for ras_name in _rasdial_connected():
-        found.append(
+        return [
             VpnAdapter(
                 name=f"RAS:{ras_name}",
                 description=ras_name,
                 is_up=True,
                 addresses=(),
             )
-        )
-
-    # Deduplicate by name
-    uniq: dict[str, VpnAdapter] = {}
-    for a in found:
-        uniq[a.name] = a
-    return list(uniq.values())
+        ]
+    return []
 
 
 class VpnMonitor:
@@ -216,12 +287,14 @@ class VpnMonitor:
 
     def start(self) -> None:
         self._running = True
-        # Seed state so we don't open a tab for an already-connected VPN
-        # unless the UI explicitly asks — initial edge is "no change".
         current = self.snapshot()
-        self._was_connected = bool(current)
+        self._was_connected = False
         if self.on_tick:
-            self.on_tick(self._was_connected, current)
+            self.on_tick(bool(current), current)
+        # If the tunnel is already the default route, open immediately.
+        if current and self.on_connect:
+            self._was_connected = True
+            self.on_connect(current)
 
     def stop(self) -> None:
         self._running = False

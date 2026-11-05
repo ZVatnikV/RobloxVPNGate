@@ -52,7 +52,7 @@ Works with common tunnels: WireGuard / WinTun, OpenVPN TAP, NordLynx, WARP, Mull
 
 ### Option A — installer (recommended)
 
-Download [`RobloxVPNGate-Setup-1.0.0.exe`](https://github.com/ZVatnikV/RobloxVPNGate/releases/latest) and install it. Requires Windows 10/11 and Chrome or Edge.
+Download [`RobloxVPNGate-Setup-1.0.1.exe`](https://github.com/ZVatnikV/RobloxVPNGate/releases/latest) and install it. Requires Windows 10/11 and Chrome or Edge.
 
 ### Option B — from source
 

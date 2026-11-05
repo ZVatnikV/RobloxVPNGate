@@ -65,7 +65,7 @@ Roblox VPN Gate смотрит на другое: **поднялся ли сет
 
 ### Вариант A — установщик (рекомендуется)
 
-1. Скачайте [`RobloxVPNGate-Setup-1.0.0.exe`](https://github.com/ZVatnikV/RobloxVPNGate/releases/latest)
+1. Скачайте [`RobloxVPNGate-Setup-1.0.1.exe`](https://github.com/ZVatnikV/RobloxVPNGate/releases/latest)
 2. Установите и запустите **Roblox VPN Gate**
 3. Нужны Windows 10/11 и Google Chrome или Microsoft Edge
 

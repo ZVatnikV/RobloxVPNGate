@@ -1,5 +1,5 @@
 #define MyAppName "Roblox VPN Gate"
-#define MyAppVersion "1.0.0"
+#define MyAppVersion "1.0.1"
 #define MyAppPublisher "ZVatnikV"
 #define MyAppURL "https://zvatnikv.github.io/RobloxVPNGate/"
 #define MyAppExeName "RobloxVPNGate.exe"
