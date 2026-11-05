@@ -8,15 +8,15 @@
 </p>
 
 <p align="center">
-  <a href="#-быстрый-старт"><img src="https://img.shields.io/badge/Старт-за_2_минуты-e2231a?style=for-the-badge" alt="start" /></a>
+  <a href="https://zvatnikv.github.io/RobloxVPNGate/"><img src="https://img.shields.io/badge/Website-GitHub_Pages-e2231a?style=for-the-badge" alt="pages" /></a>
+  <a href="https://github.com/ZVatnikV/RobloxVPNGate/releases/latest"><img src="https://img.shields.io/badge/Download-Installer_EXE-ff6a3d?style=for-the-badge" alt="download" /></a>
   <a href="README_EN.md"><img src="https://img.shields.io/badge/Language-English-2ec5ff?style=for-the-badge" alt="EN" /></a>
   <img src="https://img.shields.io/badge/Platform-Windows-0b0d12?style=for-the-badge" alt="Windows" />
-  <img src="https://img.shields.io/badge/UI-HTML-ff6a3d?style=for-the-badge" alt="HTML UI" />
   <img src="https://img.shields.io/badge/License-MIT-3dde9b?style=for-the-badge" alt="MIT" />
 </p>
 
 <p align="center">
-  <b>🇷🇺 Русский</b> · <a href="README_EN.md">🇬🇧 English</a>
+  <b>🇷🇺 Русский</b> · <a href="README_EN.md">🇬🇧 English</a> · <a href="https://zvatnikv.github.io/RobloxVPNGate/">🌐 Сайт</a>
 </p>
 
 ---
@@ -63,13 +63,13 @@ Roblox VPN Gate смотрит на другое: **поднялся ли сет
 
 ## Быстрый старт
 
-### Требования
+### Вариант A — установщик (рекомендуется)
 
-- Windows 10 / 11
-- Python 3.10+
-- Google Chrome **или** Microsoft Edge
+1. Скачайте [`RobloxVPNGate-Setup-1.0.0.exe`](https://github.com/ZVatnikV/RobloxVPNGate/releases/latest)
+2. Установите и запустите **Roblox VPN Gate**
+3. Нужны Windows 10/11 и Google Chrome или Microsoft Edge
 
-### Установка
+### Вариант B — из исходников
 
 ```bat
 git clone https://github.com/ZVatnikV/RobloxVPNGate.git
@@ -77,16 +77,13 @@ cd RobloxVPNGate
 run.bat
 ```
 
-Или вручную:
+Сборка своего инсталлера:
 
-```bat
-py -3 -m venv .venv
-.venv\Scripts\activate
-pip install -r requirements.txt
-python main.py
+```powershell
+.\build.ps1
 ```
 
-При первом запуске Selenium скачает подходящий webdriver автоматически.
+Артефакт появится в `dist\installer\`.
 
 ---
 

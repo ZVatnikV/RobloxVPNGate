@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Roblox VPN Gate — туннель включился, Roblox открылся</title>
+  <meta name="description" content="Windows-приложение, которое открывает вкладку Roblox при реальном подключении VPN и сразу закрывает её при отключении." />
+  <meta property="og:title" content="Roblox VPN Gate" />
+  <meta property="og:description" content="Следит за VPN-туннелем, а не за окном клиента. Красивый HTML UI." />
+  <meta property="og:image" content="assets/banner.jpg" />
+  <meta name="theme-color" content="#0b0d12" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="site.css" />
+  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+</head>
+<body>
+  <div class="fx orb-1" aria-hidden="true"></div>
+  <div class="fx orb-2" aria-hidden="true"></div>
+  <div class="fx grain" aria-hidden="true"></div>
+
+  <header class="nav">
+    <a class="logo" href="./">
+      <span class="mark" aria-hidden="true"></span>
+      <span>Roblox VPN Gate</span>
+    </a>
+    <nav>
+      <a href="#how">Как работает</a>
+      <a href="#shots">Скриншоты</a>
+      <a href="#install">Установка</a>
+      <a class="ghost" href="en.html">EN</a>
+      <a class="cta" href="https://github.com/ZVatnikV/RobloxVPNGate/releases/latest">Скачать</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero">
+      <p class="kicker">Windows · VPN tunnel watcher · HTML UI</p>
+      <h1>Roblox VPN Gate</h1>
+      <p class="lead">Включаешь VPN — открывается Roblox. Выключаешь — вкладка сразу закрывается. Следит за туннелем, а не за процессом клиента.</p>
+      <div class="hero-actions">
+        <a class="btn primary" href="https://github.com/ZVatnikV/RobloxVPNGate/releases/latest">Скачать установщик</a>
+        <a class="btn secondary" href="https://github.com/ZVatnikV/RobloxVPNGate">GitHub</a>
+      </div>
+      <div class="hero-visual">
+        <img src="assets/banner.jpg" alt="Roblox VPN Gate banner" />
+      </div>
+    </section>
+
+    <section class="strip" id="how">
+      <div class="card">
+        <span class="n">01</span>
+        <h3>Детект туннеля</h3>
+        <p>Опрашивает VPN-адаптеры и RAS. Открытый клиент без туннеля — не считается.</p>
+      </div>
+      <div class="card">
+        <span class="n">02</span>
+        <h3>Открытие вкладки</h3>
+        <p>При переходе offline → online открывает Chrome/Edge на нужном URL.</p>
+      </div>
+      <div class="card">
+        <span class="n">03</span>
+        <h3>Мгновенное закрытие</h3>
+        <p>Как только туннель падает — вкладка закрывается без ручных кликов.</p>
+      </div>
+    </section>
+
+    <section class="shots" id="shots">
+      <div class="section-head">
+        <h2>Интерфейс</h2>
+        <p>Тёмный HTML UI с темами, журналом событий и настройками под ваш VPN.</p>
+      </div>
+      <div class="shot-grid">
+        <figure>
+          <img src="assets/screenshot-dashboard.jpg" alt="Панель статуса" loading="lazy" />
+          <figcaption>Панель статуса и быстрые действия</figcaption>
+        </figure>
+        <figure>
+          <img src="assets/screenshot-settings.jpg" alt="Настройки" loading="lazy" />
+          <figcaption>Настройки URL, браузера и адаптеров</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section class="install" id="install">
+      <div class="install-panel">
+        <h2>Установка за минуту</h2>
+        <ol>
+          <li>Скачайте <code>RobloxVPNGate-Setup-1.0.0.exe</code> из Releases</li>
+          <li>Установите и запустите приложение</li>
+          <li>Включите мониторинг и подключите VPN как обычно</li>
+        </ol>
+        <div class="hero-actions">
+          <a class="btn primary" href="https://github.com/ZVatnikV/RobloxVPNGate/releases/latest">Открыть релизы</a>
+          <a class="btn secondary" href="https://github.com/ZVatnikV/RobloxVPNGate/blob/main/README.md">README на русском</a>
+        </div>
+      </div>
+      <aside class="note">
+        <h3>Важно</h3>
+        <p>Нужны Windows 10/11 и Google Chrome или Microsoft Edge. Selenium подтянет webdriver при первом запуске.</p>
+        <p class="mini">MIT License · open source</p>
+      </aside>
+    </section>
+  </main>
+
+  <footer>
+    <span>© 2026 Roblox VPN Gate</span>
+    <div>
+      <a href="en.html">English</a>
+      <a href="https://github.com/ZVatnikV/RobloxVPNGate">Source</a>
+      <a href="https://github.com/ZVatnikV/RobloxVPNGate/releases">Releases</a>
+    </div>
+  </footer>
+
+  <script>
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((e) => { if (e.isIntersecting) e.target.classList.add('in'); });
+    }, { threshold: 0.12 });
+    document.querySelectorAll('.card, .shot-grid figure, .install-panel, .note').forEach((el) => io.observe(el));
+  </script>
+</body>
+</html>

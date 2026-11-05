@@ -1,0 +1,13 @@
+Roblox VPN Gate
+================
+
+Программа следит за реальным VPN-туннелем Windows.
+Когда VPN подключается — открывается вкладка Roblox.
+Когда VPN отключается — вкладка сразу закрывается.
+
+Требования:
+  • Windows 10 / 11 (x64)
+  • Google Chrome или Microsoft Edge
+
+Сайт: https://zvatnikv.github.io/RobloxVPNGate/
+Релизы: https://github.com/ZVatnikV/RobloxVPNGate/releases

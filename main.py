@@ -11,10 +11,10 @@ from pathlib import Path
 import webview
 
 from browser_controller import BrowserController
-from config import ROOT, ensure_settings, save_settings
+from config import ensure_settings, resource_root, save_settings
 from vpn_detector import VpnMonitor, detect_active_vpns, list_network_adapters
 
-UI_DIR = ROOT / "ui"
+UI_DIR = resource_root() / "ui"
 
 
 class Api:

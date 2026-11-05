@@ -8,15 +8,15 @@
 </p>
 
 <p align="center">
-  <a href="#-quick-start"><img src="https://img.shields.io/badge/Start-in_2_minutes-e2231a?style=for-the-badge" alt="start" /></a>
+  <a href="https://zvatnikv.github.io/RobloxVPNGate/en.html"><img src="https://img.shields.io/badge/Website-GitHub_Pages-e2231a?style=for-the-badge" alt="pages" /></a>
+  <a href="https://github.com/ZVatnikV/RobloxVPNGate/releases/latest"><img src="https://img.shields.io/badge/Download-Installer_EXE-ff6a3d?style=for-the-badge" alt="download" /></a>
   <a href="README.md"><img src="https://img.shields.io/badge/Language-Русский-e2231a?style=for-the-badge" alt="RU" /></a>
   <img src="https://img.shields.io/badge/Platform-Windows-0b0d12?style=for-the-badge" alt="Windows" />
-  <img src="https://img.shields.io/badge/UI-HTML-ff6a3d?style=for-the-badge" alt="HTML UI" />
   <img src="https://img.shields.io/badge/License-MIT-3dde9b?style=for-the-badge" alt="MIT" />
 </p>
 
 <p align="center">
-  <a href="README.md">🇷🇺 Русский</a> · <b>🇬🇧 English</b>
+  <a href="README.md">🇷🇺 Русский</a> · <b>🇬🇧 English</b> · <a href="https://zvatnikv.github.io/RobloxVPNGate/en.html">🌐 Website</a>
 </p>
 
 ---
@@ -50,13 +50,11 @@ Works with common tunnels: WireGuard / WinTun, OpenVPN TAP, NordLynx, WARP, Mull
 
 ## Quick start
 
-### Requirements
+### Option A — installer (recommended)
 
-- Windows 10 / 11
-- Python 3.10+
-- Google Chrome **or** Microsoft Edge
+Download [`RobloxVPNGate-Setup-1.0.0.exe`](https://github.com/ZVatnikV/RobloxVPNGate/releases/latest) and install it. Requires Windows 10/11 and Chrome or Edge.
 
-### Install
+### Option B — from source
 
 ```bat
 git clone https://github.com/ZVatnikV/RobloxVPNGate.git
@@ -64,14 +62,7 @@ cd RobloxVPNGate
 run.bat
 ```
 
-Or manually:
-
-```bat
-py -3 -m venv .venv
-.venv\Scripts\activate
-pip install -r requirements.txt
-python main.py
-```
+Build your own installer with `.\build.ps1` → `dist\installer\`.
 
 ---
 

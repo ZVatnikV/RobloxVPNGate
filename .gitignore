@@ -18,3 +18,4 @@ driver_cache/
 pat.txt
 *.pem
 .env
+*.spec.bak
