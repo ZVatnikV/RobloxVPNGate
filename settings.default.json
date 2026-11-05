@@ -1,0 +1,15 @@
+{
+  "url": "https://www.roblox.com",
+  "poll_interval_sec": 1.5,
+  "auto_start_monitor": true,
+  "close_on_disconnect": true,
+  "open_on_connect": true,
+  "browser": "chrome",
+  "headless": false,
+  "notify_on_change": true,
+  "start_minimized": false,
+  "custom_adapter_keywords": [],
+  "ignore_adapters": [],
+  "theme": "midnight",
+  "language": "ru"
+}

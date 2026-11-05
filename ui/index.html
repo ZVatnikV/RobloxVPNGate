@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Roblox VPN Gate</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@500;600;700;800&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="noise" aria-hidden="true"></div>
+  <div class="orb orb-a" aria-hidden="true"></div>
+  <div class="orb orb-b" aria-hidden="true"></div>
+
+  <div class="app">
+    <aside class="rail">
+      <div class="brand">
+        <div class="brand-mark" aria-hidden="true">
+          <span></span><span></span><span></span>
+        </div>
+        <div>
+          <div class="brand-name">Roblox VPN Gate</div>
+          <div class="brand-sub" id="brandSub">Страж подключения</div>
+        </div>
+      </div>
+
+      <nav class="nav">
+        <button class="nav-btn active" data-view="dashboard" type="button">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M4 10.5 12 4l8 6.5V20a1 1 0 0 1-1 1h-5v-6H10v6H5a1 1 0 0 1-1-1v-9.5Z" stroke="currentColor" stroke-width="1.6"/></svg>
+          <span data-i18n="nav_dash">Панель</span>
+        </button>
+        <button class="nav-btn" data-view="settings" type="button">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M12 15.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Z" stroke="currentColor" stroke-width="1.6"/><path d="M19.4 13a7.8 7.8 0 0 0 .05-2l2.05-1.55-2-3.46-2.4.8a7.7 7.7 0 0 0-1.73-1L15 3h-6l-.37 2.79a7.7 7.7 0 0 0-1.73 1l-2.4-.8-2 3.46L4.55 11a7.8 7.8 0 0 0 0 2L2.5 14.55l2 3.46 2.4-.8a7.7 7.7 0 0 0 1.73 1L9 21h6l.37-2.79a7.7 7.7 0 0 0 1.73-1l2.4.8 2-3.46L19.4 13Z" stroke="currentColor" stroke-width="1.6"/></svg>
+          <span data-i18n="nav_settings">Настройки</span>
+        </button>
+        <button class="nav-btn" data-view="adapters" type="button">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M4 7h16M4 12h10M4 17h7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><circle cx="18" cy="12" r="2.2" stroke="currentColor" stroke-width="1.6"/><circle cx="15" cy="17" r="2.2" stroke="currentColor" stroke-width="1.6"/></svg>
+          <span data-i18n="nav_adapters">Адаптеры</span>
+        </button>
+      </nav>
+
+      <div class="rail-foot">
+        <div class="lang-switch" role="group" aria-label="Language">
+          <button type="button" data-lang="ru" class="active">RU</button>
+          <button type="button" data-lang="en">EN</button>
+        </div>
+        <div class="version">v1.0.0</div>
+      </div>
+    </aside>
+
+    <main class="stage">
+      <header class="topbar">
+        <div>
+          <h1 id="viewTitle">Панель</h1>
+          <p id="viewHint">Следит за реальным VPN-туннелем, а не за окном клиента</p>
+        </div>
+        <div class="top-actions">
+          <button id="btnRefresh" class="ghost-btn" type="button" data-i18n="refresh">Обновить</button>
+          <button id="btnToggleMonitor" class="primary-btn" type="button">Запустить мониторинг</button>
+        </div>
+      </header>
+
+      <section class="view active" id="view-dashboard">
+        <div class="hero-grid">
+          <article class="status-panel">
+            <div class="status-ring" id="statusRing" data-state="idle">
+              <div class="ring-core">
+                <div class="pulse"></div>
+                <div class="state-label" id="stateLabel">Ожидание</div>
+                <div class="state-sub" id="stateSub">Мониторинг выключен</div>
+              </div>
+            </div>
+            <div class="status-meta">
+              <div class="meta-row">
+                <span data-i18n="meta_vpn">VPN</span>
+                <strong id="vpnBadge">—</strong>
+              </div>
+              <div class="meta-row">
+                <span data-i18n="meta_browser">Вкладка</span>
+                <strong id="browserBadge">закрыта</strong>
+              </div>
+              <div class="meta-row">
+                <span data-i18n="meta_monitor">Монитор</span>
+                <strong id="monitorBadge">выкл</strong>
+              </div>
+            </div>
+          </article>
+
+          <article class="action-panel">
+            <h2 data-i18n="quick_title">Быстрые действия</h2>
+            <p data-i18n="quick_hint">Откройте или закройте Roblox вручную, не дожидаясь смены VPN.</p>
+            <div class="action-row">
+              <button id="btnOpen" class="tile-btn" type="button">
+                <span data-i18n="open_tab">Открыть вкладку</span>
+              </button>
+              <button id="btnClose" class="tile-btn danger" type="button">
+                <span data-i18n="close_tab">Закрыть вкладку</span>
+              </button>
+            </div>
+            <div class="log-box">
+              <div class="log-title" data-i18n="events">События</div>
+              <ul id="eventLog"></ul>
+            </div>
+          </article>
+        </div>
+
+        <article class="adapters-live">
+          <div class="section-head">
+            <h2 data-i18n="active_vpn">Активные VPN-интерфейсы</h2>
+            <span class="chip" id="vpnCount">0</span>
+          </div>
+          <div id="vpnList" class="pill-list empty">
+            <div class="empty-note" data-i18n="no_vpn">VPN не обнаружен</div>
+          </div>
+        </article>
+      </section>
+
+      <section class="view" id="view-settings">
+        <form id="settingsForm" class="settings-grid" autocomplete="off">
+          <label class="field">
+            <span data-i18n="set_url">URL для открытия</span>
+            <input name="url" type="url" required />
+          </label>
+
+          <label class="field">
+            <span data-i18n="set_interval">Интервал опроса (сек)</span>
+            <input name="poll_interval_sec" type="number" min="0.5" max="30" step="0.1" />
+          </label>
+
+          <label class="field">
+            <span data-i18n="set_browser">Браузер</span>
+            <select name="browser">
+              <option value="chrome">Google Chrome</option>
+              <option value="edge">Microsoft Edge</option>
+            </select>
+          </label>
+
+          <label class="field">
+            <span data-i18n="set_theme">Тема</span>
+            <select name="theme">
+              <option value="midnight">Midnight Arena</option>
+              <option value="ember">Ember Forge</option>
+              <option value="ice">Ice Tunnel</option>
+            </select>
+          </label>
+
+          <label class="field wide">
+            <span data-i18n="set_keywords">Доп. ключевые слова адаптеров (через запятую)</span>
+            <input name="custom_adapter_keywords" type="text" placeholder="myvpn, company-tun" />
+          </label>
+
+          <label class="field wide">
+            <span data-i18n="set_ignore">Игнорировать адаптеры (через запятую)</span>
+            <input name="ignore_adapters" type="text" placeholder=" eth0, Wi-Fi" />
+          </label>
+
+          <div class="toggles">
+            <label class="toggle"><input type="checkbox" name="auto_start_monitor" /><span data-i18n="set_autostart">Автозапуск мониторинга</span></label>
+            <label class="toggle"><input type="checkbox" name="open_on_connect" /><span data-i18n="set_open">Открывать вкладку при подключении VPN</span></label>
+            <label class="toggle"><input type="checkbox" name="close_on_disconnect" /><span data-i18n="set_close">Закрывать вкладку при отключении VPN</span></label>
+            <label class="toggle"><input type="checkbox" name="notify_on_change" /><span data-i18n="set_notify">Показывать события в журнале</span></label>
+          </div>
+
+          <div class="form-actions">
+            <button type="submit" class="primary-btn" data-i18n="save">Сохранить</button>
+            <span id="saveHint" class="save-hint"></span>
+          </div>
+        </form>
+      </section>
+
+      <section class="view" id="view-adapters">
+        <div class="section-head">
+          <h2 data-i18n="all_adapters">Все сетевые адаптеры</h2>
+          <button id="btnScan" class="ghost-btn" type="button" data-i18n="scan">Сканировать</button>
+        </div>
+        <div id="adapterTable" class="adapter-table"></div>
+      </section>
+    </main>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
