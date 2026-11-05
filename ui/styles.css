@@ -284,11 +284,33 @@ body {
   display: grid;
   place-items: center;
   position: relative;
-  background:
-    radial-gradient(circle at center, rgba(255,255,255,0.03), transparent 55%),
-    conic-gradient(from 210deg, var(--accent), var(--accent-2), transparent 70%);
-  padding: 3px;
-  animation: spinSlow 10s linear infinite;
+  isolation: isolate;
+  /* Static soft rim — text stays upright; only ::after spins */
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--line);
+}
+.status-ring::after {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  border-radius: 50%;
+  background: conic-gradient(
+    from 0deg,
+    transparent 0deg,
+    transparent 210deg,
+    var(--accent) 260deg,
+    var(--accent-2) 310deg,
+    transparent 360deg
+  );
+  z-index: 0;
+  opacity: 0.35;
+  pointer-events: none;
+  will-change: transform;
+}
+.status-ring[data-state="watching"]::after,
+.status-ring[data-state="connected"]::after {
+  opacity: 1;
+  animation: spinSlow 4.5s linear infinite;
 }
 .status-ring::before {
   content: "";
@@ -297,12 +319,15 @@ body {
   border-radius: 50%;
   background: #0c1018;
   border: 1px solid var(--line);
+  z-index: 1;
+  box-shadow: inset 0 0 40px rgba(0, 0, 0, 0.35);
 }
 .ring-core {
   position: relative;
-  z-index: 1;
+  z-index: 2;
   text-align: center;
   padding: 20px;
+  transform: none !important;
 }
 .pulse {
   width: 14px;
@@ -320,9 +345,21 @@ body {
   background: var(--warn);
   animation: pulseWarn 1.8s ease-out infinite;
 }
-.status-ring[data-state="idle"] { animation: none; }
+.status-ring[data-state="idle"]::after {
+  animation: none;
+  opacity: 0.25;
+  background: conic-gradient(
+    from 210deg,
+    color-mix(in srgb, var(--accent) 55%, transparent),
+    color-mix(in srgb, var(--accent-2) 45%, transparent),
+    transparent 70%
+  );
+}
 
-@keyframes spinSlow { to { transform: rotate(360deg); } }
+@keyframes spinSlow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
 @keyframes pulseOk {
   0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--ok) 55%, transparent); }
   70% { box-shadow: 0 0 0 18px transparent; }
